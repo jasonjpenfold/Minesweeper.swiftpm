@@ -17,7 +17,7 @@ struct ContentView: View {
             
             VStack(spacing: 16){
                 Spacer()
-                Grid(alignment: .center, horizontalSpacing: 30, verticalSpacing: 30){
+                LazyVGrid(columns: model.columns, alignment: .center, spacing: 16){
                     ForEach(0..<model.width, id: \.self){ row in
                         GridRow{
                             ForEach(0..<model.width, id: \.self){
