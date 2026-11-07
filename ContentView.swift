@@ -24,7 +24,16 @@ struct ContentView: View {
                                 col in 
                                 
                                     let block = model.getBlock(row: row, col:col)
+                                if model.gameState == .setup{
                                     BlockView(block: block)
+                                }else if model.gameState == .running{
+                                    HStack(spacing:16){
+                                        Text("⬛️")
+                                            .font(.largeTitle)
+                                        
+                                    }
+                                }
+                                                                        
                                     
                                 
                                                             }
@@ -37,6 +46,7 @@ struct ContentView: View {
                     model.startGame()
                 }
                 .buttonStyle(.borderedProminent)
+                .disabled(model.gameState != .setup)
                 Spacer()
             }
         }
