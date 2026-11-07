@@ -6,7 +6,7 @@ enum BlockValue: Int, CustomStringConvertible{
         case .zero, .one, .two, .three, .four, .five, .six, .seven, .eight:
             return String(rawValue)
         case .bomb:
-            return "BOMB"
+            return "💥"
         
         }
             }
@@ -22,6 +22,9 @@ struct Block: Identifiable, Hashable{
     var isBomb: Bool{
         value == .bomb
     }
+    init(value: BlockValue = .zero){
+        self.value = value
+    }
     mutating func openBlock(){
         isOpen = true
     }
@@ -32,21 +35,27 @@ struct Block: Identifiable, Hashable{
 }
 
 struct BlockGrid{
+    let width: Int
+    let mineCount: Int
     var land: [Block]
-    init(){
-        land = []
-    }
-    init(width: Int){
-        guard width > 3 else {
-            self.land = []
-            return
-        }
-        let grid = Array(repeating: Block(value: .zero), count: width * width - 3)
-       // let bombs = Array(repeating: Block(value: .bomb), count: 3) 
-       // self.land = []
-        self.land = grid //+ bombs
-      //  self.land.shuffle()
+    
+    init(width: Int, mineCount: Int){
+        let size = width * width
+        self.width = width
+        self.mineCount = mineCount
+        let grid = Array(repeating: Block(), count: size - mineCount)
+        let mines = Array(repeating: Block(value: .bomb), count: mineCount)
+        self.land = (grid + mines).shuffled()
         
+        
+        
+    }
+    func getBlock(row: Int, col: Int)-> Block{
+        let index = (row * self.width) + col
+        guard index < self.land.count else {
+            return Block()
+        }
+        return self.land[index]
     }
 }
     

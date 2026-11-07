@@ -4,23 +4,41 @@ struct ContentView: View {
     
     @Environment(MinesweeperViewModel.self) private var model
     var body: some View {
-        VStack {
-            Image(systemName: "laser.burst")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, Minesweeper!")
-            Text("H")
-        }
-       
-        VStack{
-            Text("P")
-            LazyVGrid(columns: Array(repeating:GridItem(), count: model.width)){
-                ForEach([1,2,3,4,5,6,7,8,9,0], id: \.self){
-                    num in 
-                    Text("\(num)")
-                }
-                }
+        VStack(spacing:16){
+            Spacer()
+            HStack {
+                Image(systemName: "laser.burst")
+                    .imageScale(.large)
+                    .foregroundColor(.accentColor)
+                Text("Hello, Minesweeper!")
+                
+            }
             
+            
+            VStack(spacing: 16){
+                Spacer()
+                VStack(spacing:16){
+                    ForEach(0..<model.width, id: \.self){ row in
+                        HStack{
+                            ForEach(0..<model.width, id: \.self){
+                                col in 
+                                
+                                let block = model.getBlock(row: row, col:col)
+                                BlockView(block: block)
+                                
+                            }
+                        }
+                        
+                    }
+                }
+                Spacer()
+                Button("Start game"){
+                    model.startGame()
+                }
+                .buttonStyle(.borderedProminent)
+                Spacer()
+            }
         }
-    }
+        }
+        
 }
