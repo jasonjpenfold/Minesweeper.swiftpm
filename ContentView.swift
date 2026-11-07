@@ -17,16 +17,17 @@ struct ContentView: View {
             
             VStack(spacing: 16){
                 Spacer()
-                VStack(spacing:16){
+                Grid(alignment: .center, horizontalSpacing: 30, verticalSpacing: 30){
                     ForEach(0..<model.width, id: \.self){ row in
-                        HStack{
+                        GridRow{
                             ForEach(0..<model.width, id: \.self){
                                 col in 
                                 
-                                let block = model.getBlock(row: row, col:col)
-                                BlockView(block: block)
+                                    let block = model.getBlock(row: row, col:col)
+                                    BlockView(block: block)
+                                    
                                 
-                            }
+                                                            }
                         }
                         
                     }
