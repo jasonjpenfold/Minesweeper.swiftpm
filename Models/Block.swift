@@ -3,8 +3,10 @@ import SwiftUI
 enum BlockValue: Int, CustomStringConvertible{
     var description: String{
         switch self{
-        case .zero, .one, .two, .three, .four, .five, .six, .seven, .eight:
+        case .one, .two, .three, .four, .five, .six, .seven, .eight:
             return String(rawValue)
+        case .zero:
+            return " "
         case .bomb:
             return "💥"
         
@@ -19,6 +21,7 @@ struct Block: Identifiable, Hashable{
     var id = UUID()
     var value: BlockValue
     var isOpen: Bool = false
+    var isFlagged: Bool = false
     var isBomb: Bool{
         value == .bomb
     }
@@ -32,6 +35,9 @@ struct Block: Identifiable, Hashable{
         let oldValue = value.rawValue
         value = BlockValue(rawValue: oldValue + 1) ?? .zero
     }
+    mutating func flagged(){
+        isFlagged.toggle()
+    }
 }
 
 struct BlockGrid{
@@ -43,10 +49,10 @@ struct BlockGrid{
         let size = width * width
         self.width = width
         self.mineCount = mineCount
-       // let grid = Array(repeating: Block(), count: size - mineCount)
+       
         let grid = (0..<(size - mineCount)).map{_ in Block()}
         
-       // let mines = Array(repeating: Block(value: .bomb), count: mineCount)
+       
         let mines = (0..<mineCount).map{_ in Block(value: .bomb)}
         self.land = (grid + mines)
         
@@ -100,14 +106,20 @@ struct BlockGrid{
         return self.land[index]
     }
     mutating func openBlock(block: Block){
-        print("Block to open: \(block)")
+        
         if let blockToOpen = self.land.firstIndex(where: {$0.id == block.id}){
-            print("block.id: \(block.id)")
-            print(blockToOpen)
+            
             land[blockToOpen].openBlock()
-            print(land[0])
+            
         }
                 
+    }
+    mutating func flagBlock(block: Block){
+        if let blockToFlag = self.land.firstIndex(where: {$0.id == block.id}){
+            
+            land[blockToFlag].flagged()
+            
+        }
     }
 }
     

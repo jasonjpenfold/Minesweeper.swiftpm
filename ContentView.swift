@@ -15,9 +15,9 @@ struct ContentView: View {
             }
             
             
-            VStack(spacing: 16){
-                Spacer()
-                LazyVGrid(columns: model.columns, alignment: .center, spacing: 16){
+            VStack(spacing: 8){
+               
+                LazyVGrid(columns: model.columns, alignment: .center, spacing: 2){
                     ForEach(0..<model.width, id: \.self){ row in
                         GridRow{
                             ForEach(0..<model.width, id: \.self){
@@ -25,38 +25,25 @@ struct ContentView: View {
                                 
                                     let block = model.getBlock(row: row, col:col)
                                 
-                                if model.gameState == .setup || block.isOpen{
+                               
                                     BlockView(block: block)
-                                        
-                                }else if model.gameState == .running && !block.isOpen{
-                                    HStack(spacing:16){
-                                        Text("⬛️")
-                                            .font(.largeTitle)
-                                            .onTapGesture(perform: {
-                                                print("ContantView block: \(block)")
-                                                print("row:\(row) col: \(col)")
-                                                model.open(block:block)
-                                            })
-                                        
-                                    }
-                                }
-                                                                        
-                                    
+                                    .onLongPressGesture(minimumDuration: 0.5, perform: {model.flagBlock(block: block)})
                                 
-                                                            }
+                            }
                         }
                         
                     }
-                }
+                }.background(.gray)
                 Spacer()
-                Button("Start game"){
-                    model.startGame()
-                }
+                Button(model.gameState == .setup ? "Start game" : "Reset game"){
+                        model.startGame()
+                    }
+                                    
                 .buttonStyle(.borderedProminent)
-                .disabled(model.gameState != .setup)
+            
                 Spacer()
             }
-        }
+        }.padding()
         }
         
 }

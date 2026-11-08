@@ -14,7 +14,7 @@ class MinesweeperViewModel{
     }
     private(set) var gameState: GameState
     
-    init(width: Int = 6, mineCount: Int = 2){
+    init(width: Int = 9, mineCount: Int = 10){
         self.width = width
         self.mineCount = mineCount
         self.mineland = BlockGrid(width: width, mineCount: mineCount)
@@ -23,7 +23,8 @@ class MinesweeperViewModel{
         
     }
     func startGame(){
-        print(mineland)
+        
+        self.mineland = BlockGrid(width: width, mineCount: mineCount)
         mineland.createMinefield()
         gameState = .running
     }
@@ -31,8 +32,13 @@ class MinesweeperViewModel{
         self.mineland.getBlock(row: row, col: col)
     }
     func open(block:Block){
-        print("tapped")
-        print(block)
+    
         mineland.openBlock(block: block)
+        if block.isBomb{
+            gameState = .gameover
+        }
+    }
+    func flagBlock(block: Block){
+        mineland.flagBlock(block: block)
     }
 }
