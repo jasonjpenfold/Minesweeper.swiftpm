@@ -13,12 +13,14 @@ class MinesweeperViewModel{
         case gameover
     }
     private(set) var gameState: GameState
+    var isGameOver: Bool = false
+    private(set) var touchEqualsFlagged = false
     
     init(width: Int = 9, mineCount: Int = 10){
         self.width = width
         self.mineCount = mineCount
         self.mineland = BlockGrid(width: width, mineCount: mineCount)
-        self.columns = Array(repeating: GridItem(.flexible(minimum: 16, maximum: 100)), count: width)
+        self.columns = Array(repeating: GridItem(), count: width)
         self.gameState = .setup
         
     }
@@ -27,18 +29,31 @@ class MinesweeperViewModel{
         self.mineland = BlockGrid(width: width, mineCount: mineCount)
         mineland.createMinefield()
         gameState = .running
+        isGameOver = false
+        touchEqualsFlagged = false
     }
     func getBlock(row: Int, col: Int)->Block{
         self.mineland.getBlock(row: row, col: col)
     }
     func open(block:Block){
-    
+        if block.isFlagged{ return }
         mineland.openBlock(block: block)
         if block.isBomb{
             gameState = .gameover
+            isGameOver = true
         }
     }
     func flagBlock(block: Block){
         mineland.flagBlock(block: block)
+    }
+    func toggleTouchEqualsFlagged(){
+        touchEqualsFlagged.toggle()
+    }
+    func blockTapped(block: Block){
+        if touchEqualsFlagged{
+            flagBlock(block: block)
+            return
+        }
+        open(block: block)
     }
 }

@@ -4,23 +4,26 @@ struct BlockView: View{
     @Environment(MinesweeperViewModel.self) private var model
     let block: Block
     var body: some View{
-        
+        ZStack{
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.gray)
+                .shadow(radius: 5)
             Text("\(block.value.description)")
-                .font(.largeTitle)
+                .font(.caption)
                 .foregroundColor(.black)
                 .padding()
-                .frame(width:68,height:68)
-                
-                
+                .frame(width:40,height:40)
+            
+            
                 .overlay{
                     if model.gameState == .running && !block.isOpen {
                         Text("⬛️")
-                            .font(.largeTitle)
-                            .frame(width:68,height:68)
+                            .font(.caption)
+                            
                             .onTapGesture(perform: {
                                 
+                                model.blockTapped(block: block)
                                 
-                                model.open(block:block)
                             })
                             .overlay{
                                 if block.isFlagged{
@@ -30,7 +33,10 @@ struct BlockView: View{
                     }else if block.isFlagged{
                         Text("❌")
                     }
-                    }
+                }.frame(width: 40, height: 40)
+            
+        }
+            
                                 
         
                 

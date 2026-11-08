@@ -105,12 +105,31 @@ struct BlockGrid{
         }
         return self.land[index]
     }
+    mutating func floodFill(root: Int){
+        var visited: Set<Int> = []
+        var stack: [Int] = [root]
+        while !stack.isEmpty{
+            let visitNext = stack.removeLast()
+            if visited.contains(visitNext){
+                continue
+            }
+            land[visitNext].isOpen = true
+            visited.insert(visitNext)
+            if land[visitNext].value != .zero{
+                continue
+            }
+            stack += findNeighbours(index: visitNext).sorted()
+            
+        }
+    }
     mutating func openBlock(block: Block){
         
         if let blockToOpen = self.land.firstIndex(where: {$0.id == block.id}){
             
             land[blockToOpen].openBlock()
-            
+            if land[blockToOpen].value == .zero{
+                floodFill(root: blockToOpen)
+            }
         }
                 
     }
