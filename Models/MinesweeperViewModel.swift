@@ -20,7 +20,7 @@ class MinesweeperViewModel{
         self.width = width
         self.mineCount = mineCount
         self.mineland = BlockGrid(width: width, mineCount: mineCount)
-        self.columns = Array(repeating: GridItem(), count: width)
+        self.columns = Array(repeating: GridItem(.fixed(30)), count: width)
         self.gameState = .setup
         
     }

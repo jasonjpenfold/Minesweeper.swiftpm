@@ -9,17 +9,21 @@ struct BlockView: View{
                 .fill(.gray)
                 .shadow(radius: 5)
             Text("\(block.value.description)")
-                .font(.caption)
+                .font(.title)
+                .bold()
+                .monospaced()
                 .foregroundColor(.black)
                 .padding()
-                .frame(width:40,height:40)
+                .frame(width:60,height:60)
             
             
                 .overlay{
                     if model.gameState == .running && !block.isOpen {
-                        Text("⬛️")
-                            .font(.caption)
-                            
+                       // Text("⬛️")
+                         //   .font(.callout)
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(.black)
+                            .frame(width: 36, height: 36)
                             .onTapGesture(perform: {
                                 
                                 model.blockTapped(block: block)
@@ -33,7 +37,7 @@ struct BlockView: View{
                     }else if block.isFlagged{
                         Text("❌")
                     }
-                }.frame(width: 40, height: 40)
+                }.frame(width: 36, height: 36)
             
         }
             

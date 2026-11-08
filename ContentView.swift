@@ -41,7 +41,7 @@ struct ContentView: View {
                         }
                         
                     }
-                }.background(.gray)
+                }
                 Spacer()
                 Button(model.gameState == .setup ? "Start game" : "Reset game"){
                         model.startGame()
@@ -52,6 +52,7 @@ struct ContentView: View {
                 Spacer()
             }
         }.padding()
+            .background(.gray)
             .alert("Boom - Game Over", isPresented: $viewmodel.isGameOver){
                 Button("Start again?"){
                     model.startGame()
