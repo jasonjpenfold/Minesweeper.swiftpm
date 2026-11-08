@@ -23,10 +23,16 @@ class MinesweeperViewModel{
         
     }
     func startGame(){
+        print(mineland)
         mineland.createMinefield()
         gameState = .running
     }
     func getBlock(row: Int, col: Int)->Block{
         self.mineland.getBlock(row: row, col: col)
+    }
+    func open(block:Block){
+        print("tapped")
+        print(block)
+        mineland.openBlock(block: block)
     }
 }

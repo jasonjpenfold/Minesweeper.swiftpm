@@ -43,8 +43,11 @@ struct BlockGrid{
         let size = width * width
         self.width = width
         self.mineCount = mineCount
-        let grid = Array(repeating: Block(), count: size - mineCount)
-        let mines = Array(repeating: Block(value: .bomb), count: mineCount)
+       // let grid = Array(repeating: Block(), count: size - mineCount)
+        let grid = (0..<(size - mineCount)).map{_ in Block()}
+        
+       // let mines = Array(repeating: Block(value: .bomb), count: mineCount)
+        let mines = (0..<mineCount).map{_ in Block(value: .bomb)}
         self.land = (grid + mines)
         
     }
@@ -95,6 +98,16 @@ struct BlockGrid{
             return Block()
         }
         return self.land[index]
+    }
+    mutating func openBlock(block: Block){
+        print("Block to open: \(block)")
+        if let blockToOpen = self.land.firstIndex(where: {$0.id == block.id}){
+            print("block.id: \(block.id)")
+            print(blockToOpen)
+            land[blockToOpen].openBlock()
+            print(land[0])
+        }
+                
     }
 }
     

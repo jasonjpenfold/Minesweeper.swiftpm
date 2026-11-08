@@ -6,6 +6,9 @@ struct BlockView: View{
         HStack(spacing:16){
             Text("\(block.value.description)")
                 .font(.largeTitle)
+                .onTapGesture(perform: {
+                    print("block id: \(block.id)")
+                })
             
         }
                 

@@ -24,12 +24,19 @@ struct ContentView: View {
                                 col in 
                                 
                                     let block = model.getBlock(row: row, col:col)
-                                if model.gameState == .setup{
+                                
+                                if model.gameState == .setup || block.isOpen{
                                     BlockView(block: block)
-                                }else if model.gameState == .running{
+                                        
+                                }else if model.gameState == .running && !block.isOpen{
                                     HStack(spacing:16){
                                         Text("⬛️")
                                             .font(.largeTitle)
+                                            .onTapGesture(perform: {
+                                                print("ContantView block: \(block)")
+                                                print("row:\(row) col: \(col)")
+                                                model.open(block:block)
+                                            })
                                         
                                     }
                                 }
