@@ -15,6 +15,7 @@ class MinesweeperViewModel{
     private(set) var gameState: GameState
     var isGameOver: Bool = false
     private(set) var touchEqualsFlagged = false
+    private(set) var isWon = false
     
     init(width: Int = 9, mineCount: Int = 10){
         self.width = width
@@ -41,10 +42,21 @@ class MinesweeperViewModel{
         if block.isBomb{
             gameState = .gameover
             isGameOver = true
+            return
+        }
+        if mineland.checkAllMinesFound(){
+            
+            playerWonGame()
+            return
         }
     }
     func flagBlock(block: Block){
         mineland.flagBlock(block: block)
+        if mineland.checkAllMinesFound(){
+            
+            playerWonGame()
+            return
+        }
     }
     func toggleTouchEqualsFlagged(){
         touchEqualsFlagged.toggle()
@@ -55,5 +67,8 @@ class MinesweeperViewModel{
             return
         }
         open(block: block)
+    }
+    func playerWonGame(){
+        isWon = true
     }
 }

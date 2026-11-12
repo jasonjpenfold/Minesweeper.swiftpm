@@ -140,5 +140,14 @@ struct BlockGrid{
             
         }
     }
+    func checkAllMinesFound()->Bool{
+        let allMines = land.filter{$0.isBomb == true}
+        let allFlaggedMines = allMines.filter({ $0.isFlagged })
+        let allMinesFlagged = mineCount == allFlaggedMines.count
+        let allOpenedCount = land.filter{$0.isOpen == true}.count
+        let size = width * width
+        
+        return allMinesFlagged || allOpenedCount == size - mineCount
+    }
 }
     

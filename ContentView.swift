@@ -53,11 +53,12 @@ struct ContentView: View {
             }
         }.padding()
             .background(.gray)
-            .alert("Boom - Game Over", isPresented: $viewmodel.isGameOver){
+            .alert(model.isWon ? "You Won!" : "Boom - Game Over", isPresented: $viewmodel.isGameOver){
                 Button("Start again?"){
                     model.startGame()
                 }
             }
+            
         }
         
 }
